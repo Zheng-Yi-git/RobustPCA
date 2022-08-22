@@ -1,6 +1,6 @@
-# RobustPCA
-This is the project of Convex Optimization (2022 spring).
+# Robust PCA
+This is the capstone project of *Convex Optimization*.
 
-Instructor: Chenglong Bao
+Instructor: Prof. Bao (Chenglong Bao)
 
 Collaborator: Yichuan Sun

@@ -1,23 +1,24 @@
 import generate as gn
-import numpy as np 
+import numpy as np
 from numpy.linalg import norm, svd
 
-def inexact_augmented_lagrange_multiplier(X, lmbda = 0.01, tol = 1e-7, maxIter = 1000):
+
+def inexact_augmented_lagrange_multiplier(X, lmbda=0.01, tol=1e-7, maxIter=1000):
     Y = X
     norm_two = norm(Y.ravel(), 2)
     norm_inf = norm(Y.ravel(), np.inf) / lmbda
     dual_norm = np.max([norm_two, norm_inf])
-    Y = Y /dual_norm
+    Y = Y / dual_norm
     A = np.zeros(Y.shape)
     E = np.zeros(Y.shape)
     dnorm = norm(X, 'fro')
     mu = 1.25 / norm_two
     rho = 1.5
     sv = 10.
-    n= Y.shape[1]
+    n = Y.shape[1]
     itr = 0
     while True:
-        Eraw = X - A + (1/mu) * Y
+        Eraw = X - A + (1 / mu) * Y
         Eupdate = np.maximum(Eraw - lmbda / mu, 0) + np.minimum(Eraw + lmbda / mu, 0)
         U, S, V = svd(X - Eupdate + (1 / mu) * Y, full_matrices=False)
         svp = (S > 1 / mu).shape[0]
@@ -36,10 +37,11 @@ def inexact_augmented_lagrange_multiplier(X, lmbda = 0.01, tol = 1e-7, maxIter =
         itr += 1
         if ((norm(Z, 'fro') / dnorm) < tol) or (itr >= maxIter):
             break
-    print("IALM Finished at iteration {itr}".format(itr = itr))
+    print("IALM Finished at iteration {itr}".format(itr=itr))
     return A, E
 
-A = inexact_augmented_lagrange_multiplier(gn.generate(n=100,s=200,rank=5))[0]
-E = inexact_augmented_lagrange_multiplier(gn.generate(n=100,s=200,rank=5))[1]
+
+A = inexact_augmented_lagrange_multiplier(gn.generate(n=100, s=200, rank=5))[0]
+E = inexact_augmented_lagrange_multiplier(gn.generate(n=100, s=200, rank=5))[1]
 print(A)
 print(E)
